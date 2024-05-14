@@ -18,7 +18,7 @@ const itens = [
 
 //Endpoint Read All [GET] /item
 app.get('/item', function (req, res){
-  res.send(itens)
+  res.send(itens.filter(Boolean)) //Garante que não serão enviados dados null
 })
 
 //Endpoint Read By ID [GET] /item/:id
