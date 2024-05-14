@@ -21,4 +21,11 @@ app.get('/item', function (req, res){
   res.send(itens)
 })
 
+//Endpoint Read By ID [GET] /item/:id
+app.get('/item/:id', function(req, res) {
+  const temp = req.params.id
+  res.send(itens[temp])
+})
+
+
 app.listen(3000)
