@@ -82,10 +82,11 @@ async function main(){
   })
 
   //Endpoint Delete by ID [DELETE] /item/:id
-  app.delete('/item/:id', function(req, res) {
+  app.delete('/item/:id', async function(req, res) {
     const id = req.params.id
 
-    delete itens[id]
+    await collection.deleteOne({_id: new ObjectId(id) })
+    //delete itens[id]
 
     res.send(`ID: ${id} removido!`)
   })
