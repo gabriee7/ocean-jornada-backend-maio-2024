@@ -1,7 +1,8 @@
+require('dotenv').config()
 const express = require('express')
 const { MongoClient, ObjectId } = require('mongodb')
 
-const dbUrl = 'mongodb+srv://admin:v9dtYBoi3uXbMFEW@cluster0.ujgiwb5.mongodb.net'
+const dbUrl = process.env.DATABASE_URL
 const dbName = 'ocean-jornada-backend-maio-2024'
 const client = new MongoClient(dbUrl)
 
@@ -23,12 +24,12 @@ async function main(){
   const db = client.db(dbName)
   const collection = db.collection('item')
 
-  const itens = [
+ /* const itens = [
                 'Rick Sanchez', 
                 'Morty Smith', 
                 'Summer Smith'
                 ]
-
+  */
   //Endpoint Read All [GET] /item
   app.get('/item', async function (req, res){
     const documents = await collection.find().toArray()
