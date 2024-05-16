@@ -54,7 +54,9 @@ async function main(){
     
     const newItem = body.nome
 
-    itens.push(newItem)
+    //itens.push(newItem)
+
+    collection.insertOne({nome: newItem})
 
     res.send(`Item ${newItem} adicionado com sucesso!`)
   })
