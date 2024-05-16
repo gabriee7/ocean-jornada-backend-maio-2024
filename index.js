@@ -1,68 +1,82 @@
 const express = require('express')
-const app = express()
+const { MongoClient } = require('mongodb')
 
-app.get('/', function (req, res) {
-  res.send('Hello World!')
-})
+const dbUrl = 'mongodb+srv://admin:v9dtYBoi3uXbMFEW@cluster0.ujgiwb5.mongodb.net'
+const dbName = 'ocean-jornada-backend-maio-2024'
+const client = new MongoClient(dbUrl)
 
-app.get('/oi', function (req, res) {
-  res.send('Olá, mundo!')
-})
+async function main(){
+  console.log('Conectando com o Banco de Dados...')
+  await client.connect()
+  console.log('Conectado com o Banco de Dados...')
 
+  const app = express()
 
-const itens = [
-              'Rick Sanchez', 
-              'Morty Smith', 
-              'Summer Smith'
-              ]
+  app.get('/', function (req, res) {
+    res.send('Hello World!')
+  })
 
-//Endpoint Read All [GET] /item
-app.get('/item', function (req, res){
-  res.send(itens.filter(Boolean)) //Garante que não serão enviados dados null
-})
-
-//Endpoint Read By ID [GET] /item/:id
-app.get('/item/:id', function(req, res) {
-  const temp = req.params.id
-  res.send(itens[temp])
-})
-
-//Para que o body da req [POST] virá como JSON
-app.use(express.json())
-
-//Endpoint Create [POST] /item
-app.post('/item', function(req, res) {
-  const body = req.body
-  
-  const newItem = body.nome
-
-  itens.push(newItem)
-
-  res.send(`Item ${newItem} adicionado com sucesso!`)
-})
+  app.get('/oi', function (req, res) {
+    res.send('Olá, mundo!')
+  })
 
 
-//Endpoint Update by ID [PUT] /item/:id
-app.put('/item/:id', function(req, res) {
-  //Acessa :id da requisicao 
-  const id = req.params.id
-  
-  //Extrao o body da req
-  const body = req.body
-  const updateItem = body.nome
+  const itens = [
+                'Rick Sanchez', 
+                'Morty Smith', 
+                'Summer Smith'
+                ]
 
-  itens[id] = updateItem
+  //Endpoint Read All [GET] /item
+  app.get('/item', function (req, res){
+    res.send(itens.filter(Boolean)) //Garante que não serão enviados dados null
+  })
 
-  res.send(`Item id ${id} atualizado para ${updateItem}.`)
-})
+  //Endpoint Read By ID [GET] /item/:id
+  app.get('/item/:id', function(req, res) {
+    const temp = req.params.id
+    res.send(itens[temp])
+  })
 
-//Endpoint Delete by ID [DELETE] /item/:id
-app.delete('/item/:id', function(req, res) {
-  const id = req.params.id
+  //Para que o body da req [POST] virá como JSON
+  app.use(express.json())
 
-  delete itens[id]
+  //Endpoint Create [POST] /item
+  app.post('/item', function(req, res) {
+    const body = req.body
+    
+    const newItem = body.nome
 
-  res.send(`ID: ${id} removido!`)
-})
+    itens.push(newItem)
 
-app.listen(3000)
+    res.send(`Item ${newItem} adicionado com sucesso!`)
+  })
+
+
+  //Endpoint Update by ID [PUT] /item/:id
+  app.put('/item/:id', function(req, res) {
+    //Acessa :id da requisicao 
+    const id = req.params.id
+    
+    //Extrao o body da req
+    const body = req.body
+    const updateItem = body.nome
+
+    itens[id] = updateItem
+
+    res.send(`Item id ${id} atualizado para ${updateItem}.`)
+  })
+
+  //Endpoint Delete by ID [DELETE] /item/:id
+  app.delete('/item/:id', function(req, res) {
+    const id = req.params.id
+
+    delete itens[id]
+
+    res.send(`ID: ${id} removido!`)
+  })
+
+  app.listen(3000)
+}
+
+main()
