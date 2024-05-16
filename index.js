@@ -63,7 +63,7 @@ async function main(){
 
 
   //Endpoint Update by ID [PUT] /item/:id
-  app.put('/item/:id', function(req, res) {
+  app.put('/item/:id', async function(req, res) {
     //Acessa :id da requisicao 
     const id = req.params.id
     
@@ -71,7 +71,12 @@ async function main(){
     const body = req.body
     const updateItem = body.nome
 
-    itens[id] = updateItem
+    //itens[id] = updateItem
+
+    await collection.updateOne(
+      {_id: new ObjectId(id)},
+      { $set: {nome: updateItem}} 
+    )
 
     res.send(`Item id ${id} atualizado para ${updateItem}.`)
   })
