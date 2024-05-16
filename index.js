@@ -20,6 +20,8 @@ async function main(){
     res.send('Olá, mundo!')
   })
 
+  const db = client.db(dbName)
+  const collection = db.collection('item')
 
   const itens = [
                 'Rick Sanchez', 
@@ -28,14 +30,17 @@ async function main(){
                 ]
 
   //Endpoint Read All [GET] /item
-  app.get('/item', function (req, res){
-    res.send(itens.filter(Boolean)) //Garante que não serão enviados dados null
+  app.get('/item', async function (req, res){
+    const documents = await collection.find().toArray()
+    
+    res.send(documents) //Garante que não serão enviados dados null
   })
 
   //Endpoint Read By ID [GET] /item/:id
   app.get('/item/:id', function(req, res) {
     const temp = req.params.id
     res.send(itens[temp])
+    
   })
 
   //Para que o body da req [POST] virá como JSON
