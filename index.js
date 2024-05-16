@@ -1,5 +1,5 @@
 const express = require('express')
-const { MongoClient } = require('mongodb')
+const { MongoClient, ObjectId } = require('mongodb')
 
 const dbUrl = 'mongodb+srv://admin:v9dtYBoi3uXbMFEW@cluster0.ujgiwb5.mongodb.net'
 const dbName = 'ocean-jornada-backend-maio-2024'
@@ -37,10 +37,12 @@ async function main(){
   })
 
   //Endpoint Read By ID [GET] /item/:id
-  app.get('/item/:id', function(req, res) {
+  app.get('/item/:id', async function(req, res) {
     const temp = req.params.id
-    res.send(itens[temp])
-    
+
+    const item = await collection.findOne({ _id: new ObjectId(temp)})
+
+    res.send(item)
   })
 
   //Para que o body da req [POST] virá como JSON
